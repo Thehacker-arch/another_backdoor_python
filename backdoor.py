@@ -4,7 +4,6 @@ import sys
 import socket
 import subprocess
 import time
-import json
 import psutil
 import ctypes
 import pynput
@@ -36,7 +35,7 @@ class back:
         a = eth/arp
         answer = srp(a, timeout=1, verbose=False)[0]
         count = 0
-        
+
         for element in answer:
             js = colored(f"\n{count} ==>:  {element[1].psrc}: {element[1].hwsrc}\n", "green")
             s.send(js.encode())
