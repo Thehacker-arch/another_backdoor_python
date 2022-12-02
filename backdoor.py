@@ -40,7 +40,7 @@ class back:
                                 /UDP(sport=68,dport=67) \
                                 /BOOTP(op=1,chaddr = RandMAC()) \
                                 /DHCP(options=[('message-type','discover'),('end')])
-            sendp(dhcp_discover,iface='Ethernet',verbose=1)
+            sendp(dhcp_discover,iface='Ethernet',verbose=False)
             print(count)
             count += 1
 
