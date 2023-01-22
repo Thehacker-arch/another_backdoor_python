@@ -18,4 +18,4 @@ For Webcam:
 [*] >> webcam https://discord.com/api/webhooks/your_webhook_url_that_u_copied
 ```
 
-NOTE:- This is made for --> NCAT/NETCAT
+**NOTE:- This is made for --> NCAT/NETCAT**
